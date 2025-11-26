@@ -1,20 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:t="http://www.tei-c.org/ns/1.0"
-   exclude-result-prefixes="t" version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
 
    <!-- Other div matches can be found in htm-teidiv*.xsl -->
+
+   <!-- Add a template to explicitly match and ignore list type (ogham-specific) -->
+   <xsl:template match="t:ab[@type='list']">
+      <xsl:if test="$edn-structure = 'ogham'">
+         <!-- Ignore list type for ogham -->
+      </xsl:if>
+   </xsl:template>
 
    <!-- Text edition div -->
     <xsl:template match="t:div[@type = 'edition']" priority="1">
         <xsl:param name="parm-internal-app-style" tunnel="yes" required="no"/>
         <xsl:param name="parm-external-app-style" tunnel="yes" required="no"/>
-       <div id="edition">
+       <div>
+          <xsl:attribute name="id">
+             <xsl:choose>
+                <xsl:when test="$edn-structure = 'ogham'">editionF</xsl:when>
+                <xsl:otherwise>edition</xsl:otherwise>
+             </xsl:choose>
+          </xsl:attribute>
         
 <!-- Found in htm-tpl-lang.xsl -->
          <xsl:call-template name="attr-lang"/>
-         <xsl:apply-templates/>
+         
+         <xsl:choose>
+            <xsl:when test="$edn-structure = 'ogham'">
+               <!-- Ogham-specific subtype handling -->
+               <xsl:choose>
+                  <xsl:when test="(@subtype = 'roman')">
+                     <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="(@subtype = 'transliteration')">
+                     <b>
+                        <xsl:apply-templates/>
+                     </b>
+                     <hr/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                     <xsl:apply-templates/>
+                  </xsl:otherwise>
+               </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+               <!-- Standard behavior -->
+               <xsl:apply-templates/>
+            </xsl:otherwise>
+         </xsl:choose>
 
          
            <xsl:choose>
@@ -53,6 +86,9 @@
     <xsl:template match="t:div[@type='edition']//t:div[@type='textpart']" priority="1">
         <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
         <xsl:param name="parm-internal-app-style" tunnel="yes" required="no"/>
+        
+        <!-- Skip if ogham and type is list -->
+        <xsl:if test="not($edn-structure = 'ogham' and @type='list')">
        <xsl:variable name="div-type">
            <xsl:for-each select="ancestor::t:div[@type!='edition']">
                <xsl:value-of select="@type"/>
@@ -68,14 +104,13 @@
       <xsl:if test="@n"><!-- prints div number -->
          <span class="textpartnumber" id="{$div-type}ab{$div-loc}{@n}">
             <!-- add ancestor textparts -->
-            <xsl:if
-               test="($parm-leiden-style = ('ddbdp','dclp','sammelbuch')) and @subtype">
+            <xsl:if test="($parm-leiden-style = ('ddbdp','dclp','sammelbuch')) and @subtype">
                <xsl:value-of select="@subtype"/>
                <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:value-of select="@n"/>
          </span>
-          <xsl:if test="child::*[1][self::t:div[@type='textpart'][@n]]"><br /></xsl:if>
+          <xsl:if test="child::*[1][self::t:div[@type='textpart'][@n]]"><br/></xsl:if>
       </xsl:if>
 
       <!-- Custodial events here -->
@@ -158,6 +193,7 @@
         <xsl:if test="$parm-internal-app-style = 'iospe' and @n">
            <!-- Template found in htm-tpl-apparatus.xsl -->
            <xsl:call-template name="tpl-iospe-apparatus"/>
+       </xsl:if>
        </xsl:if>
    </xsl:template>
 </xsl:stylesheet>

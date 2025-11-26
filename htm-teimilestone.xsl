@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:t="http://www.tei-c.org/ns/1.0"
-   exclude-result-prefixes="t" version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
    <!-- More specific templates in teimilestone.xsl -->
 
    <xsl:template match="t:milestone">
        <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>      
        <xsl:param name="parm-edn-structure" tunnel="yes" required="no"/>
        <xsl:choose>
-         <xsl:when
-            test="($parm-leiden-style = ('ddbdp','dclp','sammelbuch')) and ancestor::t:div[@type = 'translation']">
+         <xsl:when test="($parm-leiden-style = ('ddbdp','dclp','sammelbuch')) and ancestor::t:div[@type = 'translation']">
             <xsl:if test="@rend = 'break'">
                <br/>
             </xsl:if>
@@ -32,9 +28,7 @@
                <xsl:when test="@rend = 'paragraphos'">
                   <!--         imported change  from https://sourceforge.net/p/epidoc/code/2602/-->
                   <!-- Added to controll '-' when there is a milestone@rend='paragraphos' followed by a lb@break='no' see: https://github.com/DCLP/dclpxsltbox/issues/52-->
-                 <xsl:if test="following-sibling::node()[not(self::text()
-                    and normalize-space(self::text())='')][1]/self::t:lb[@break='no']
-                    and not(preceding-sibling::*[1][self::t:supplied[@reason='lost']])">-</xsl:if>
+                 <xsl:if test="following-sibling::node()[not(self::text()                     and normalize-space(self::text())='')][1]/self::t:lb[@break='no']                     and not(preceding-sibling::*[1][self::t:supplied[@reason='lost']])">-</xsl:if>
                   <xsl:if test="not(parent::t:supplied) and not($parm-edn-structure='inslib')">
                      <br/>
                   </xsl:if>

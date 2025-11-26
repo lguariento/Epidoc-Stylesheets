@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" 
-                version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
   
   <xsl:template match="t:term">
-      <xsl:param name="parm-edn-structure" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-hgv-gloss" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
+      <xsl:param name="parm-edn-structure" tunnel="yes" required="no"/>
+      <xsl:param name="parm-hgv-gloss" tunnel="yes" required="no"/>
+      <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
       <xsl:choose>
       <!-- Adds caption for hgv translations -->
           <xsl:when test="($parm-leiden-style = ('ddbdp','dclp','sammelbuch')) and ancestor::t:div[@type = 'translation'] and @target">

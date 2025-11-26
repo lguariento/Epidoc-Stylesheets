@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:t="http://www.tei-c.org/ns/1.0" 
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   exclude-result-prefixes="t" version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="t" version="2.0">
    <xsl:output method="xml" encoding="UTF-8"/>
 
     <xsl:include href="global-varsandparams.xsl"/>
@@ -72,6 +68,7 @@
     <xsl:include href="htm-tpl-struct-sample.xsl"/>
     <xsl:include href="htm-tpl-struct-sigidoc.xsl"/>
     <xsl:include href="htm-tpl-struct-ecg.xsl"/>
+    <xsl:include href="htm-tpl-struct-ogham.xsl"/>
 
     <!-- global named templates with no html, also used by start-txt  -->
    <xsl:include href="tpl-certlow.xsl"/>
@@ -238,6 +235,27 @@
                   <xsl:with-param name="parm-verse-lines" select="$verse-lines" tunnel="yes"/>
                   <xsl:with-param name="parm-css-loc" select="$css-loc" tunnel="yes"/>
               </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="$edn-structure = 'ogham'">
+          <xsl:call-template name="ogham-structure">
+              <xsl:with-param name="parm-internal-app-style" select="$internal-app-style" tunnel="yes"/>
+              <xsl:with-param name="parm-external-app-style" select="$external-app-style" tunnel="yes"/>
+              <xsl:with-param name="parm-edn-structure" select="$edn-structure" tunnel="yes"/>
+              <xsl:with-param name="parm-edition-type" select="$edition-type" tunnel="yes"/>
+              <xsl:with-param name="parm-hgv-gloss" select="$hgv-gloss" tunnel="yes"/>
+              <xsl:with-param name="parm-leiden-style" select="$leiden-style" tunnel="yes"/>
+              <xsl:with-param name="parm-line-inc" select="$line-inc" tunnel="yes" as="xs:double"/>
+              <xsl:with-param name="parm-verse-lines" select="$verse-lines" tunnel="yes"/>
+              <xsl:with-param name="parm-css-loc" select="$css-loc" tunnel="yes"/>
+              <!-- Added by Luca -->
+              <xsl:with-param name="parm-bib" select="$bibliography" tunnel="yes"/>
+              <xsl:with-param name="parm-bibloc" select="$localbibl" tunnel="yes"/>
+              <xsl:with-param name="parm-zoteroUorG" select="$ZoteroUorG" tunnel="yes"/>
+              <xsl:with-param name="parm-zoteroKey" select="$ZoteroKey" tunnel="yes"/>
+              <xsl:with-param name="parm-zoteroNS" select="$ZoteroNS" tunnel="yes"/>
+              <xsl:with-param name="parm-zoteroStyle" select="$ZoteroStyle" tunnel="yes"/>
+
+          </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
              <xsl:call-template name="default-structure">

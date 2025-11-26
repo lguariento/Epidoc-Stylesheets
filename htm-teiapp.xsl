@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:tei="http://www.tei-c.org/ns/1.0"
-                xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t"
-                version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
   <!-- Contains app and its children rdg, ptr, note and lem -->
 
    <xsl:template match="t:app">
-      <xsl:param name="parm-internal-app-style" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-external-app-style" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-edn-structure" tunnel="yes" required="no"></xsl:param>
+      <xsl:param name="parm-internal-app-style" tunnel="yes" required="no"/>
+      <xsl:param name="parm-external-app-style" tunnel="yes" required="no"/>
+      <xsl:param name="parm-edn-structure" tunnel="yes" required="no"/>
       <xsl:param name="location" tunnel="yes" required="no"/>
       <xsl:choose>
          <xsl:when test="$parm-edn-structure = 'igcyr'">
@@ -26,8 +22,7 @@
                            </xsl:variable>
                      <xsl:choose>
                               <xsl:when test="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
-                                 <xsl:for-each
-                                    select="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
+                                 <xsl:for-each select="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
                                     <xsl:text> </xsl:text>
                                     <xsl:choose><xsl:when test="t:author"><xsl:value-of select="t:author[1]/t:name[@type='surname']"/>
                                        <xsl:if test="t:author[2]">
@@ -79,8 +74,7 @@
                            </xsl:variable>
                            <xsl:choose>
                               <xsl:when test="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
-                                 <xsl:for-each
-                                    select="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
+                                 <xsl:for-each select="document('Workspace/files/BIBLIOGRAPHY.xml')//t:bibl[@xml:id = $indresp]">
                                     <xsl:text> </xsl:text>
                                     <xsl:choose><xsl:when test="t:author"><xsl:value-of select="t:author[1]/t:name[@type='surname']"/>
                                        <xsl:if test="t:author[2]">
@@ -192,9 +186,9 @@
   </xsl:template>
 
    <xsl:template match="t:lem">
-      <xsl:param name="parm-edition-type" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
-      <xsl:param name="parm-hgv-gloss" tunnel="yes" required="no"></xsl:param>
+      <xsl:param name="parm-edition-type" tunnel="yes" required="no"/>
+      <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
+      <xsl:param name="parm-hgv-gloss" tunnel="yes" required="no"/>
       <xsl:choose>
          <xsl:when test="$parm-leiden-style=('ddbdp','dclp','sammelbuch') and ancestor::t:div[@type='translation']">
             <xsl:variable name="wit-val" select="@resp"/>
@@ -226,8 +220,7 @@
               </span>
             </span>
          </xsl:when>
-         <xsl:when test="$parm-leiden-style=('ddbdp','dclp','sammelbuch') and ancestor::t:*[local-name()=('reg','corr','rdg') 
-            or self::t:del[@rend='corrected']]">
+         <xsl:when test="$parm-leiden-style=('ddbdp','dclp','sammelbuch') and ancestor::t:*[local-name()=('reg','corr','rdg')              or self::t:del[@rend='corrected']]">
             <xsl:apply-templates/>
             <xsl:if test="@resp">
                <xsl:choose>

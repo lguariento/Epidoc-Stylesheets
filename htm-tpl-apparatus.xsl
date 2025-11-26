@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" 
-   version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
    <!-- Apparatus creation: look in tpl-apparatus.xsl for documentation -->
    <xsl:include href="tpl-apparatus.xsl"/>
    
    <!-- DDbDP Apparatus framework -->
    <xsl:template name="tpl-apparatus">
       <!-- An apparatus is only created if one of the following is true -->
-      <xsl:if test=".//t:choice | .//t:subst | .//t:app | .//t:g[@type='apostrophe'] |
-         .//t:hi[@rend = 'diaeresis' or @rend = 'grave' or @rend = 'acute' or @rend = 'asper' or @rend = 'lenis' or @rend = 'circumflex'] |
-         .//t:del[@rend='slashes' or @rend='cross-strokes'] | .//t:milestone[@rend = 'box']">
+      <xsl:if test=".//t:choice | .//t:subst | .//t:app | .//t:g[@type='apostrophe'] |          .//t:hi[@rend = 'diaeresis' or @rend = 'grave' or @rend = 'acute' or @rend = 'asper' or @rend = 'lenis' or @rend = 'circumflex'] |          .//t:del[@rend='slashes' or @rend='cross-strokes'] | .//t:milestone[@rend = 'box']">
          
          <h2>Apparatus</h2>
          <div id="apparatus">
@@ -21,13 +16,7 @@
                   * hi not nested in the app part of an app;
                   * del or milestone.
         -->
-               <xsl:for-each select="(.//t:choice | .//t:subst | .//t:app)[not(ancestor::t:*[local-name()=('choice','subst','app')])] | .//t:g[@type='apostrophe'] |
-                  .//t:hi[@rend=('diaeresis','grave','acute','asper','lenis','circumflex')][not(ancestor::t:*[local-name()=('orig','reg','sic','corr','lem','rdg') 
-                  or self::t:del[@rend='corrected'] 
-                  or self::t:add[@place='inline']][1][local-name()=('reg','corr','rdg') 
-                  or self::t:del[@rend='corrected']]
-                  or ancestor::t:hi)] |
-                  .//t:del[@rend='slashes' or @rend='cross-strokes'] | .//t:milestone[@rend = 'box']">
+               <xsl:for-each select="(.//t:choice | .//t:subst | .//t:app)[not(ancestor::t:*[local-name()=('choice','subst','app')])] | .//t:g[@type='apostrophe'] |                   .//t:hi[@rend=('diaeresis','grave','acute','asper','lenis','circumflex')][not(ancestor::t:*[local-name()=('orig','reg','sic','corr','lem','rdg')                    or self::t:del[@rend='corrected']                    or self::t:add[@place='inline']][1][local-name()=('reg','corr','rdg')                    or self::t:del[@rend='corrected']]                   or ancestor::t:hi)] |                   .//t:del[@rend='slashes' or @rend='cross-strokes'] | .//t:milestone[@rend = 'box']">
                   <app>
                      <!-- Found in tpl-apparatus.xsl -->
                      <xsl:call-template name="ddbdp-app">
@@ -80,8 +69,7 @@
       <!-- Does not produce links for translations -->
       <xsl:if test="not(ancestor::t:div[@type = 'translation'])">
          <!-- Only produces a link if it is not nested in an element that would be in apparatus -->
-         <xsl:if test="not((local-name() = 'choice' or local-name() = 'subst' or local-name() = 'app')
-            and (ancestor::t:choice or ancestor::t:subst or ancestor::t:app))">
+         <xsl:if test="not((local-name() = 'choice' or local-name() = 'subst' or local-name() = 'app')             and (ancestor::t:choice or ancestor::t:subst or ancestor::t:app))">
             <xsl:variable name="app-num">
                <xsl:value-of select="name()"/>
                <xsl:number level="any" format="01"/>
@@ -133,13 +121,11 @@
 
   <!-- called from htm-teidivedition.xsl -->
   <xsl:template name="tpl-iospe-apparatus">
-    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
-    <xsl:if test="not(descendant::t:div[@type='textpart'][@n]) and
-      (.//t:choice[child::t:corr] or (.//t:supplied[@reason='omitted'] and not($parm-leiden-style='medcyprus')) or .//t:subst or .//t:hi[@rend=('subscript','superscript')])">
+    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
+    <xsl:if test="not(descendant::t:div[@type='textpart'][@n]) and       (.//t:choice[child::t:corr] or (.//t:supplied[@reason='omitted'] and not($parm-leiden-style='medcyprus')) or .//t:subst or .//t:hi[@rend=('subscript','superscript')])">
       <xsl:variable name="listapp">
         <!-- generate a list of app entries, with line numbers for each (and render them later) -->
-        <xsl:for-each
-          select=".//(t:choice[child::t:corr]|t:supplied[@reason='omitted']|t:subst|t:hi[@rend=('subscript','superscript')])[not(ancestor::t:rdg)]">
+        <xsl:for-each select=".//(t:choice[child::t:corr]|t:supplied[@reason='omitted']|t:subst|t:hi[@rend=('subscript','superscript')])[not(ancestor::t:rdg)]">
           <xsl:choose>
             <xsl:when test="self::t:supplied[@reason='omitted'] and $parm-leiden-style='medcyprus'"/>
             <xsl:otherwise>
@@ -156,27 +142,21 @@
                 <xsl:text>orig. </xsl:text>
                 <xsl:call-template name="iospe-appcontext">
                   <!-- template below: strips diacritics, omits reg/corr/add/ex, and uppercases -->
-                  <xsl:with-param name="context"
-                    select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"
-                  />
+                  <xsl:with-param name="context" select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:when test="self::t:supplied">
                 <xsl:text>orig. </xsl:text>
                 <xsl:call-template name="iospe-appcontext">
                   <!-- template below: strips diacritics, omits reg/corr/add/ex, and uppercases -->
-                  <xsl:with-param name="context"
-                    select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]/text()"
-                  />
+                  <xsl:with-param name="context" select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]/text()"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:when test="self::t:subst and child::t:add and child::t:del">
                 <xsl:text>corr. ex </xsl:text>
                 <xsl:call-template name="iospe-appcontext">
                   <!-- template below: strips diacritics, omits reg/corr/add/ex, and uppercases -->
-                  <xsl:with-param name="context"
-                    select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"
-                  />
+                  <xsl:with-param name="context" select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:when test="self::t:hi[@rend=('subscript','superscript')]">
@@ -230,9 +210,7 @@
   <xsl:template mode="iospe-context" match="t:reg|t:corr|t:add|t:ex|t:rdg"/>
   
   <xsl:template mode="iospe-context" match="text()">
-    <xsl:value-of
-      select="upper-case(translate(normalize-unicode(.,'NFD'),'&#x0301;&#x0313;&#x0314;&#x0342;',''))"
-    />
+    <xsl:value-of select="upper-case(translate(normalize-unicode(.,'NFD'),'́̓̔͂',''))"/>
   </xsl:template>
   
   <xsl:template mode="iospe-context" match="t:gap|t:supplied[@reason='lost']">
@@ -550,9 +528,7 @@ choice with reg and orig -->
     <xsl:text>reg., orig. </xsl:text>
     <xsl:call-template name="iospe-appcontext">
       <!-- template below: strips diacritics, omits reg/corr/add/ex, and uppercases -->
-      <xsl:with-param name="context"
-        select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"
-      />
+      <xsl:with-param name="context" select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"/>
     </xsl:call-template>
   </xsl:if>
   <xsl:value-of select="t:orig"/>
@@ -586,9 +562,7 @@ in the text the text  after correction is printed, in apparatus instead the text
     <xsl:text>del </xsl:text>
     <xsl:call-template name="iospe-appcontext">
       <!-- template below: strips diacritics, omits reg/corr/add/ex, and uppercases -->
-      <xsl:with-param name="context"
-        select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"
-      />
+      <xsl:with-param name="context" select="(ancestor::t:w|ancestor::t:name|ancestor::t:placeName|ancestor::t:num)[1]"/>
     </xsl:call-template>
   </xsl:if>
   <xsl:value-of select="t:del"/>
@@ -609,7 +583,7 @@ in the text the text  after correction is printed, in apparatus instead the text
 -->
 
   <xsl:template name="intappaddabovebelow">
-    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
+    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
    
         <xsl:value-of select="."/><xsl:text> add </xsl:text><xsl:value-of select="@place"/>
   </xsl:template>
@@ -617,7 +591,7 @@ in the text the text  after correction is printed, in apparatus instead the text
 
   <!--Raised/Lowered Characters -->
   <xsl:template name="intapphi">
-    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
+    <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
  
   <xsl:value-of select="@rend"/>
   </xsl:template>

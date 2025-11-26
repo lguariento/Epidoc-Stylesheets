@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" 
-                version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
   <!-- Contains template for surplus -->
    
     <xsl:template match="t:surplus">
-        <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
-        <xsl:param name="parm-edition-type" tunnel="yes" required="no"></xsl:param>
+        <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
+        <xsl:param name="parm-edition-type" tunnel="yes" required="no"/>
        <xsl:choose>
            <xsl:when test="$parm-edition-type = 'diplomatic'">
                <xsl:apply-templates/>

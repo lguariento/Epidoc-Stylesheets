@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:t="http://www.tei-c.org/ns/1.0"
-   exclude-result-prefixes="t" version="2.0">
+<!-- $Id$ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0">
    <!-- hi imports in teihi.xsl, html span created here -->
    <xsl:import href="teihi.xsl"/>
 
    <xsl:template match="t:hi">
-       <xsl:param name="parm-leiden-style" tunnel="yes" required="no"></xsl:param>
-       <xsl:param name="parm-edn-structure" tunnel="yes" required="no"></xsl:param>
-       <xsl:param name="parm-edition-type" tunnel="yes" required="no"></xsl:param>
+       <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
+       <xsl:param name="parm-edn-structure" tunnel="yes" required="no"/>
+       <xsl:param name="parm-edition-type" tunnel="yes" required="no"/>
       <xsl:choose>
          <!-- No html code needed for these -->
-         <xsl:when
-            test="@rend = 'diaeresis' or @rend = 'grave' or @rend = 'acute' or @rend = 'asper' or @rend = 'lenis' or @rend = 'circumflex'">
+         <xsl:when test="@rend = 'diaeresis' or @rend = 'grave' or @rend = 'acute' or @rend = 'asper' or @rend = 'lenis' or @rend = 'circumflex'">
             <xsl:apply-imports/>
          </xsl:when>
          <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
          <!-- @rend='apex'                                                       -->
          <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-         <xsl:when test="@rend='apex' and ancestor-or-self::t:*[@xml:lang][1][@xml:lang = 'la']
-            and not(child::t:unclear)">
+         <xsl:when test="@rend='apex' and ancestor-or-self::t:*[@xml:lang][1][@xml:lang = 'la']             and not(child::t:unclear)">
             <xsl:element name="span">
                <xsl:attribute name="class">apex</xsl:attribute>
                <xsl:attribute name="title">apex over: <xsl:value-of select="."/>
